@@ -2,6 +2,7 @@ package com.ratesservice.service;
 
 import com.ratesservice.model.dto.CurrencyResponseDto;
 import com.ratesservice.model.entites.CurrencyRate;
+import com.ratesservice.service.kafka.KafkaPublisher;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,14 +23,17 @@ public class CurrencyService {
     private final WebClient.Builder webClientBuilder;
     private final CurrencyApi currencyApi;
     private static Logger logger = LoggerFactory.getLogger(CurrencyService.class);
+    private final KafkaPublisher kafkaPublisher;
 
 //    @Scheduled(cron = "0 0 0 * * ?")  // everyday
     @Scheduled(cron = "*/10 * * * * *") // for testing only
     public void fetchCurrencyRates() {
+        //kafkaPublisher.sendEvent("TEST SEND");
         WebClient webClient = webClientBuilder.baseUrl(getAllExchangeRates).build();
         CurrencyResponseDto responseDto = getCurrencyResponseDtoMono(webClient);
         logger.info("Currency rates deserialized: {}", responseDto);
         List<CurrencyRate>  currencyRates = currencyApi.addCurrencyRates(responseDto);
+//        kafkaPublisher.sendEvent("New currency rates occurred: " + currencyRates);
         logger.info("Currency rates saved to db: {}", currencyRates);
     }
 

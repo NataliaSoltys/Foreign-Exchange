@@ -1,9 +1,9 @@
 server:
-  port: 8080
+  port: 8081
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3307/frg_exng
+    url: jdbc:mysql://mysql:3307/frg_exng
     username: root
     password: koteczek123!
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -17,8 +17,8 @@ spring:
         org.hibernate.SQL: DEBUG
   kafka:
     bootstrap-servers: kafka:9092
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-    template:
-      default-topic: event-topic
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: notification-group
+      topic: event-topic
