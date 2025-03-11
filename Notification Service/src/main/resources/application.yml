@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://mysql:3307/frg_exng
+    url: jdbc:mysql://127.0.0.1:3307/frg_exng
     username: root
     password: koteczek123!
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -16,9 +16,9 @@ spring:
       level:
         org.hibernate.SQL: DEBUG
   kafka:
-    bootstrap-servers: kafka:9092
+    bootstrap-servers: localhost:9092
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: notification-group
-      topic: event-topic
+      topic: new-currency
