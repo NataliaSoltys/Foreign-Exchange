@@ -2,6 +2,7 @@ package com.ratesservice.web;
 
 import com.ratesservice.model.entites.CurrencyRate;
 import com.ratesservice.repository.CurrencyRateRepository;
+import com.ratesservice.service.CurrencyApi;
 import com.ratesservice.service.CurrencyService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -19,7 +20,7 @@ import java.util.List;
 public class CurrencyRatesController {
 
     @Autowired
-    private CurrencyRateRepository currencyRateRepository;
+    private CurrencyApi currencyApi;
 
     private static Logger logger = LoggerFactory.getLogger(CurrencyService.class);
 
@@ -27,14 +28,11 @@ public class CurrencyRatesController {
     public ResponseEntity<List<CurrencyRate>> getCurrencyRatesByDate(@RequestParam("date") String date) {
         try {
             LocalDate parsedDate = LocalDate.parse(date);
-            List<CurrencyRate> currencyRates = currencyRateRepository.findByDate(parsedDate);
-            if (currencyRates.isEmpty()) {
-                logger.info("No currency rates found for date {}", date);
-                return ResponseEntity.noContent().build();
-            }
+            List<CurrencyRate> currencyRates = currencyApi.findByDate(parsedDate);
             logger.info("Fetched currency rates {} records", currencyRates.size());
             return ResponseEntity.ok(currencyRates);
         } catch (Exception e) {
+            logger.error(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -42,11 +40,7 @@ public class CurrencyRatesController {
 
     @GetMapping("/by-code")
     public ResponseEntity<List<CurrencyRate>> getCurrencyRatesByCode(@RequestParam("code") String code) {
-        List<CurrencyRate> currencyRates = currencyRateRepository.findByCode(code);
-        if (currencyRates.isEmpty()) {
-            logger.info("No currency rates found for code {}", code);
-            return ResponseEntity.noContent().build();
-        }
+        List<CurrencyRate> currencyRates = currencyApi.findByCode(code);
         logger.info("Fetched currency rates {} records", currencyRates.size());
         return ResponseEntity.ok(currencyRates);
     }

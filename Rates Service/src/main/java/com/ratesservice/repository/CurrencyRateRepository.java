@@ -14,4 +14,5 @@ public interface CurrencyRateRepository extends JpaRepository<CurrencyRate, UUID
     List<CurrencyRate> findByCode(String code);
 
     List<CurrencyRate> findByDate(LocalDate date);
+    
 }

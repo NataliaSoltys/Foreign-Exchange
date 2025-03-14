@@ -33,4 +33,21 @@ public class CurrencyApi {
         currencyRateRepository.saveAll(currencyRates);
         return currencyRates;
     }
+
+
+    public List<CurrencyRate> findByDate(LocalDate effectiveDate) {
+        List<CurrencyRate> currencyRates = currencyRateRepository.findByDate(effectiveDate);
+        if (currencyRates.isEmpty()) {
+            throw new RuntimeException("No currency rates found for date " + effectiveDate);
+        }
+        return currencyRates;
+    }
+
+    public List<CurrencyRate> findByCode(String code) {
+        List<CurrencyRate> currencyRates = currencyRateRepository.findByCode(code);
+        if (currencyRates.isEmpty()) {
+            throw new RuntimeException("No currency rates found for code " + code);
+        }
+        return currencyRates;
+    }
 }
