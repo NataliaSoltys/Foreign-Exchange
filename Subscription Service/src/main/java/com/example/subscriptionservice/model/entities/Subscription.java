@@ -2,14 +2,19 @@ package com.example.subscriptionservice.model.entities;
 
 import com.example.subscriptionservice.model.enums.SubscriptionType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.hibernate.annotations.ColumnDefault;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "subscription")
 public class Subscription {
     @Id

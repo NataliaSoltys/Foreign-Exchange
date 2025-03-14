@@ -6,7 +6,8 @@ import lombok.Data;
 
 @Data
 public class SubscriptionDto {
-
+    @JsonProperty("userId")
+    private String userId;
     @JsonProperty("email")
     private String email;
     @JsonProperty("currencyCode")

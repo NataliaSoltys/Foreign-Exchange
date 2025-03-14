@@ -2,6 +2,7 @@ package com.example.subscriptionservice.web;
 
 import com.example.subscriptionservice.model.dto.SubscriptionDto;
 import com.example.subscriptionservice.model.entities.Subscription;
+import com.example.subscriptionservice.model.enums.SubscriptionType;
 import com.example.subscriptionservice.service.SubscriptionApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +25,23 @@ public class SubscriptionController {
     private static Logger logger = LoggerFactory.getLogger(SubscriptionController.class);
 
     @PostMapping
-    @RequestMapping("/add")
-    public ResponseEntity<Object> addSubscription(@RequestBody SubscriptionDto subscriptionDto) {
+    @RequestMapping("/addWithNewUser")
+    public ResponseEntity<Object> addSubscriptionWithNewUser(@RequestBody SubscriptionDto subscriptionDto) {
         try {
             subscriptionApi.addSubscription(subscriptionDto);
             logger.info("Created subscription with data: {}", subscriptionDto.toString());
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping
+    @RequestMapping("/addWithExistingUser")
+    public ResponseEntity<Object> addSubscriptionWithExistingUser(@RequestBody SubscriptionDto subscriptionDto) {
+        try {
+            Subscription subscription = subscriptionApi.addSubscriptionWithExistingUser(subscriptionDto);
+            logger.info("Created subscription with data: {}", subscription.toString());
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -72,13 +85,25 @@ public class SubscriptionController {
     }
 
     @GetMapping("/by-type")
-    public ResponseEntity<List<Subscription>> getSubscriptionsByType(@RequestParam String subscriptionType) {
+    public ResponseEntity<List<Subscription>> getSubscriptionsByType(@RequestParam SubscriptionType subscriptionType) {
         try {
             List<Subscription> subscriptions = subscriptionApi.findBySubscriptionType(subscriptionType);
             logger.info("Fetched {} subscriptions of type {}", subscriptions.size(), subscriptionType);
             return ResponseEntity.ok(subscriptions);
         } catch (Exception e) {
             logger.error("Error fetching subscriptions by type {}: {}", subscriptionType, e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/by-user")
+    public ResponseEntity<List<Subscription>> getSubscriptionsByType(@RequestBody String userId) {
+        try {
+            List<Subscription> subscriptions = subscriptionApi.findByUserId(userId);
+            logger.info("Fetched {} subscriptions with last name {}, id: {}", subscriptions.size(), subscriptions.get(0).getUser().getLastName(), userId);
+            return ResponseEntity.ok(subscriptions);
+        } catch (Exception e) {
+            logger.error("Error fetching subscriptions: {}", e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }
