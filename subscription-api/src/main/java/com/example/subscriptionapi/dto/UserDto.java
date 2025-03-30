@@ -1,4 +1,4 @@
-package com.example.subscriptionservice.model.dto;
+package com.example.subscriptionapi.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

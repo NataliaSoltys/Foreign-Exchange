@@ -1,7 +1,7 @@
 package com.example.subscriptionservice.service;
 
+import com.example.subscriptionapi.dto.UserDto;
 import com.example.subscriptionservice.model.UserMapper;
-import com.example.subscriptionservice.model.dto.UserDto;
 import com.example.subscriptionservice.model.entities.User;
 import com.example.subscriptionservice.repository.UserRepository;
 import lombok.AllArgsConstructor;

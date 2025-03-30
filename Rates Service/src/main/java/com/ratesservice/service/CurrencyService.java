@@ -13,7 +13,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
-import static com.ratesservice.web.HttpUrls.getAllExchangeRates;
+import static com.ratesservice.web.HttpUrls.GET_ALL_EXCHANGE_RATES;
 
 
 @Service
@@ -28,7 +28,7 @@ public class CurrencyService {
     //    @Scheduled(cron = "0 0 0 * * ?")  // everyday
     @Scheduled(cron = "*/10 * * * * *") // for testing only
     public void fetchCurrencyRates() {
-        WebClient webClient = webClientBuilder.baseUrl(getAllExchangeRates).build();
+        WebClient webClient = webClientBuilder.baseUrl(GET_ALL_EXCHANGE_RATES).build();
         CurrencyResponseDto responseDto = getCurrencyResponseDtoMono(webClient);
         logger.info("Currency rates deserialized: {}", responseDto);
         kafkaPublisher.sendEvent("New currency rates occurred: " + responseDto.getEffectiveDate() + responseDto.getRates());

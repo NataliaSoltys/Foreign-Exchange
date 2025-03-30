@@ -1,4 +1,4 @@
-package com.example.subscriptionservice.model.enums;
+package com.example.subscriptionapi.dto;
 
 public enum SubscriptionType {
     NEW_CURRENCY_RATE,

@@ -1,6 +1,6 @@
 package com.example.subscriptionservice.model.entities;
 
-import com.example.subscriptionservice.model.enums.SubscriptionType;
+import com.example.subscriptionapi.dto.SubscriptionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

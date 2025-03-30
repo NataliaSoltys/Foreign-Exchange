@@ -1,6 +1,6 @@
 package com.example.subscriptionservice.web;
 
-import com.example.subscriptionservice.model.dto.UserDto;
+import com.example.subscriptionapi.dto.UserDto;
 import com.example.subscriptionservice.model.entities.User;
 import com.example.subscriptionservice.service.UserApi;
 import org.slf4j.Logger;

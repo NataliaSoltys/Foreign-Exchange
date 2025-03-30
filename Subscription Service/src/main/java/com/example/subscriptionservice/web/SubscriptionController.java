@@ -1,8 +1,9 @@
 package com.example.subscriptionservice.web;
 
-import com.example.subscriptionservice.model.dto.SubscriptionDto;
+import com.example.subscriptionapi.dto.SubscriptionDto;
+import com.example.subscriptionapi.dto.SubscriptionType;
+import com.example.subscriptionservice.model.SubscriptionMapperImpl;
 import com.example.subscriptionservice.model.entities.Subscription;
-import com.example.subscriptionservice.model.enums.SubscriptionType;
 import com.example.subscriptionservice.service.SubscriptionApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/subscriptions")
@@ -74,8 +77,8 @@ public class SubscriptionController {
 
     @GetMapping
     @RequestMapping("/all")
-    public ResponseEntity<List<Subscription>> getSubscriptions() {
-        List<Subscription> subscriptions = subscriptionApi.getAllSubscriptions();
+    public ResponseEntity<List<SubscriptionDto>> getSubscriptions() {
+        List<SubscriptionDto> subscriptions = subscriptionApi.getAllSubscriptions();
         if (subscriptions.isEmpty()) {
             logger.info("No subscriptions found");
             return ResponseEntity.noContent().build();
@@ -85,9 +88,9 @@ public class SubscriptionController {
     }
 
     @GetMapping("/by-type")
-    public ResponseEntity<List<Subscription>> getSubscriptionsByType(@RequestParam SubscriptionType subscriptionType) {
+    public ResponseEntity<List<SubscriptionDto>> getSubscriptionsByType(@RequestParam SubscriptionType subscriptionType) {
         try {
-            List<Subscription> subscriptions = subscriptionApi.findBySubscriptionType(subscriptionType);
+            List<SubscriptionDto> subscriptions = subscriptionApi.findBySubscriptionType(subscriptionType);
             logger.info("Fetched {} subscriptions of type {}", subscriptions.size(), subscriptionType);
             return ResponseEntity.ok(subscriptions);
         } catch (Exception e) {
@@ -106,5 +109,14 @@ public class SubscriptionController {
             logger.error("Error fetching subscriptions: {}", e.getMessage());
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping("/grouped-by-type")
+    public ResponseEntity<Map<String, List<SubscriptionDto>>> getAllSubscriptionsGroupedByType() {
+        Map<String, List<SubscriptionDto>> subscriptions = subscriptionApi.getAllSubscriptions()
+                .stream()
+                .collect(Collectors.groupingBy(sub -> sub.getSubscriptionType().name()));
+        logger.info("Grouped subscriptions by type: {}", subscriptions);
+        return ResponseEntity.ok(subscriptions);
     }
 }

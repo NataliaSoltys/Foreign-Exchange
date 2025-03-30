@@ -1,7 +1,7 @@
 package com.example.subscriptionservice.repository;
 
 import com.example.subscriptionservice.model.entities.Subscription;
-import com.example.subscriptionservice.model.enums.SubscriptionType;
+import com.example.subscriptionapi.dto.SubscriptionType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

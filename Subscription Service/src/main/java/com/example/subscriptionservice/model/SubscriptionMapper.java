@@ -1,6 +1,6 @@
 package com.example.subscriptionservice.model;
 
-import com.example.subscriptionservice.model.dto.SubscriptionDto;
+import com.example.subscriptionapi.dto.SubscriptionDto;
 import com.example.subscriptionservice.model.entities.Subscription;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,5 +20,12 @@ public interface SubscriptionMapper {
     @Mapping(source = "address", target = "user.address")
     Subscription toEntity(SubscriptionDto dto);
 
+    @Mapping(source = "user.address", target = "address")
+    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "user.email", target = "email")
+    @Mapping(source = "user.firstName", target = "userFirstName")
+    @Mapping(source = "user.lastName", target = "userLastName")
+    @Mapping(source = "user.phoneNumber", target = "phoneNumber")
+    @Mapping(source = "user.country", target = "country")
     SubscriptionDto toDto(Subscription entity);
 }

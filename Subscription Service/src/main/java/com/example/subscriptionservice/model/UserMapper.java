@@ -1,6 +1,7 @@
 package com.example.subscriptionservice.model;
 
-import com.example.subscriptionservice.model.dto.UserDto;
+
+import com.example.subscriptionapi.dto.UserDto;
 import com.example.subscriptionservice.model.entities.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

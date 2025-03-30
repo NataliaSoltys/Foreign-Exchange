@@ -1,10 +1,10 @@
 package com.example.subscriptionservice.service;
 
+import com.example.subscriptionapi.dto.SubscriptionDto;
 import com.example.subscriptionservice.model.SubscriptionMapper;
-import com.example.subscriptionservice.model.dto.SubscriptionDto;
 import com.example.subscriptionservice.model.entities.Subscription;
 import com.example.subscriptionservice.model.entities.User;
-import com.example.subscriptionservice.model.enums.SubscriptionType;
+import com.example.subscriptionapi.dto.SubscriptionType;
 import com.example.subscriptionservice.repository.SubscriptionRepository;
 import com.example.subscriptionservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -40,16 +40,16 @@ public class SubscriptionApi {
         return subscriptionRepository.findById(UUID.fromString(subscriptionId));
     }
 
-    public List<Subscription> getAllSubscriptions() {
-        return subscriptionRepository.findAll();
+    public List<SubscriptionDto> getAllSubscriptions() {
+        return subscriptionRepository.findAll().stream().map(subscriptionMapper::toDto).toList();
     }
 
-    public List<Subscription> findBySubscriptionType(SubscriptionType subscriptionType) {
+    public List<SubscriptionDto> findBySubscriptionType(SubscriptionType subscriptionType) {
         List<Subscription> foundSubscription = subscriptionRepository.findBySubscriptionType(subscriptionType);
         if (foundSubscription.isEmpty()) {
             throw new RuntimeException("Subscription not found");
         }
-        return foundSubscription;
+        return foundSubscription.stream().map(subscriptionMapper::toDto).toList();
     }
 
     public List<Subscription> findByUserId(String userId) {
