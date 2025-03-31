@@ -31,7 +31,7 @@ public class CurrencyService {
         WebClient webClient = webClientBuilder.baseUrl(GET_ALL_EXCHANGE_RATES).build();
         CurrencyResponseDto responseDto = getCurrencyResponseDtoMono(webClient);
         logger.info("Currency rates deserialized: {}", responseDto);
-        kafkaPublisher.sendEvent("New currency rates occurred: " + responseDto.getEffectiveDate() + responseDto.getRates());
+        kafkaPublisher.sendEvent(CurrencyResponseDto.builder().effectiveDate(responseDto.getEffectiveDate()).rates(responseDto.getRates()).build());
         List<CurrencyRate> currencyRates = currencyApi.addCurrencyRates(responseDto);
         logger.info("Currency rates saved to db: {}", currencyRates);
     }

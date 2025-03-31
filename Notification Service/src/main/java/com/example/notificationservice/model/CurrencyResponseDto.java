@@ -1,9 +1,7 @@
-package com.ratesservice.model.dto;
+package com.example.notificationservice.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,6 +9,8 @@ import java.util.List;
 @Data
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CurrencyResponseDto implements Serializable {
     private String table;
     private String no;
