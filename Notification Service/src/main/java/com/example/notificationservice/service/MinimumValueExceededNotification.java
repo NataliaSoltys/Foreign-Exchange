@@ -4,23 +4,23 @@ import com.example.notificationservice.model.CurrencyEvent;
 import com.example.subscriptionapi.dto.SubscriptionDto;
 import org.springframework.stereotype.Component;
 
-@Component("NEW_CURRENCY_RATE")
-public class NewCurrencyRateNotification extends NotificationTemplate {
+@Component("MINIMUM_VALUE_EXCEEDED")
+public class MinimumValueExceededNotification extends NotificationTemplate {
 
-    public NewCurrencyRateNotification(EmailSenderService emailSenderService) {
+    public MinimumValueExceededNotification(EmailSenderService emailSenderService) {
         super(emailSenderService);
     }
 
     @Override
     protected String prepareEmailBody(SubscriptionDto subscription, CurrencyEvent event) {
-        return String.format("Cześć %s! Nowy kurs waluty %s: .2f",
+        return String.format("hI %s! The %s rate has exceeded your limit %.2f",
                 subscription.getUserFirstName(),
-                subscription.getCurrencyCode());
+                subscription.getCurrencyCode(),
+                subscription.getBuyPriceBoundaryValue());
     }
 
     @Override
     protected String prepareEmailSubject(SubscriptionDto subscription, CurrencyEvent event) {
-        return "New currency rate available!";
+        return "Maximum value exceeded!";
     }
-
 }

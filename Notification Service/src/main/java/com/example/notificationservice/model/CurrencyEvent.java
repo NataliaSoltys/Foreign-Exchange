@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CurrencyResponseDto implements Serializable {
+public class CurrencyEvent implements Serializable {
     private String table;
     private String no;
     private String effectiveDate;

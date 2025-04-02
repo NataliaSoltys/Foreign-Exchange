@@ -23,9 +23,9 @@ public class NotificationWebService {
 
     public Map<String, List<SubscriptionDto>> fetchSubscriptions() {
         WebClient webClient = webClientBuilder.baseUrl(GET_ALL_SUBSCRIPTIONS_GROUPED_BY_TYPE).build();
-        Map<String, List<SubscriptionDto>> subscriptionsDtos = getSubscriptionsDtoByType(webClient);
-        logger.info("Fetched {} subscriptions: {}", subscriptionsDtos.size(), subscriptionsDtos);
-        return subscriptionsDtos;
+        Map<String, List<SubscriptionDto>> subscriptionsGroupedByType = getSubscriptionsDtoByType(webClient);
+        logger.info("Fetched subscriptions: {}", subscriptionsGroupedByType);
+        return subscriptionsGroupedByType;
     }
 
     private static Map<String, List<SubscriptionDto>> getSubscriptionsDtoByType(WebClient webClient) {

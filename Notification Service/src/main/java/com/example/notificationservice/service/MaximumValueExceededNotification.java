@@ -1,10 +1,11 @@
 package com.example.notificationservice.service;
 
-import com.example.notificationservice.model.CurrencyResponseDto;
+import com.example.notificationservice.model.CurrencyEvent;
 import com.example.subscriptionapi.dto.SubscriptionDto;
 import org.springframework.stereotype.Component;
 
-@Component
+
+@Component("MAXIMUM_VALUE_EXCEEDED")
 public class MaximumValueExceededNotification extends NotificationTemplate {
 
     public MaximumValueExceededNotification(EmailSenderService emailSenderService) {
@@ -12,21 +13,16 @@ public class MaximumValueExceededNotification extends NotificationTemplate {
     }
 
     @Override
-    protected String prepareEmailBody(SubscriptionDto subscription, CurrencyResponseDto event) {
-        return String.format("Hej %s! Kurs %s przekroczył Twój limit %.2f",
+    protected String prepareEmailBody(SubscriptionDto subscription, CurrencyEvent event) {
+        return String.format("Hi %s! The %s rate has exceeded your limit %.2f",
                 subscription.getUserFirstName(),
                 subscription.getCurrencyCode(),
                 subscription.getBuyPriceBoundaryValue());
     }
 
     @Override
-    protected String prepareEmailSubject(SubscriptionDto subscription, CurrencyResponseDto event) {
-        return "Przekroczono Twój ustawiony limit!";
-    }
-
-    @Override
-    public String getType() {
-        return "";
+    protected String prepareEmailSubject(SubscriptionDto subscription, CurrencyEvent event) {
+        return "Maximum value exceeded!";
     }
 
 }

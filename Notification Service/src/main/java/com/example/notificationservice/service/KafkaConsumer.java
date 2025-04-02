@@ -1,56 +1,58 @@
 package com.example.notificationservice.service;
 
-import com.example.notificationservice.model.CurrencyResponseDto;
+import com.example.notificationservice.model.CurrencyEvent;
 import com.example.subscriptionapi.dto.SubscriptionDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class KafkaConsumer {
 
-    private static Logger logger = LoggerFactory.getLogger(KafkaConsumer.class);
-
     private final NotificationWebService notificationWebService;
-    private final List<NotificationTemplate> notificationTemplates;
-    private final Map<String, NotificationTemplate> templateMap = new ConcurrentHashMap<>();
+    private final Map<String, NotificationTemplate> templateMap;
+    private final ObjectMapper objectMapper;
 
     @KafkaListener(topics = "new-currency", groupId = "new-currency-rates")
     public void listenToEvent(String message) {
-        CurrencyResponseDto event;
+        CurrencyEvent currencyEventEvent = deserializeMessage(message);
+        if (currencyEventEvent == null) return;
+        Map<String, List<SubscriptionDto>> groupedSubscriptions = notificationWebService.fetchSubscriptions();
+        processSubscriptions(groupedSubscriptions, currencyEventEvent);
+    }
+
+    private CurrencyEvent deserializeMessage(String message) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            event = objectMapper.readValue(message, CurrencyResponseDto.class);
-            logger.info("Received event: {}", event);
+            CurrencyEvent dto = objectMapper.readValue(message, CurrencyEvent.class);
+            log.info("Received currency event: {}", dto);
+            return dto;
         } catch (Exception e) {
-            logger.error("❌ Błąd przy deserializacji wiadomości do CurrencyResponseDto", e);
-            return;
+            log.error("Failed to deserialize message: {}", message, e);
+            return null;
         }
-        Map<String, List<SubscriptionDto>> subscriptionDtos = notificationWebService.fetchSubscriptions();
+    }
 
-        if (templateMap.isEmpty()) {
-            for (NotificationTemplate template : notificationTemplates) {
-                templateMap.put(template.getType(), template);
-            }
-        }
+    private void processSubscriptions(Map<String, List<SubscriptionDto>> subscriptionsByType, CurrencyEvent event) {
+        templateMap.keySet().forEach(
+                notificationTypeClass -> {
+                    log.info("Processing notifications for type: {}", notificationTypeClass);
+                    subscriptionsByType.get(notificationTypeClass).forEach(
+                            subscription -> {
+                                log.info("Starting sending notification process to userId{} for type {}", subscription.getUserId(), notificationTypeClass);
+                                templateMap.get(notificationTypeClass).process(subscription, event);
+                            }
+                    );
+                    log.info("Finished processing notifications for type: {}", notificationTypeClass);
+                }
+        );
 
-        subscriptionDtos.forEach((type, subscriptions) -> {
-            NotificationTemplate notification = templateMap.get(type);
-            if (notification != null) {
-                subscriptions.forEach(sub -> notification.process(sub, event));
-            } else {
-                logger.warn("Brak zarejestrowanej notyfikacji dla typu: {}", type);
-            }
-        });
-
-        logger.info("Notifications sent for event: {}", event);
+        log.info("Finished sending emails for event: {}", event);
     }
 }

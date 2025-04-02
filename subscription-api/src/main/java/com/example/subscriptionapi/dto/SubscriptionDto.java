@@ -1,5 +1,6 @@
 package com.example.subscriptionapi.dto;
 
+import com.example.subscriptionapi.dto.enums.SubscriptionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 

@@ -1,8 +1,7 @@
 package com.example.subscriptionservice.web;
 
 import com.example.subscriptionapi.dto.SubscriptionDto;
-import com.example.subscriptionapi.dto.SubscriptionType;
-import com.example.subscriptionservice.model.SubscriptionMapperImpl;
+import com.example.subscriptionapi.dto.enums.SubscriptionType;
 import com.example.subscriptionservice.model.entities.Subscription;
 import com.example.subscriptionservice.service.SubscriptionApi;
 import org.slf4j.Logger;

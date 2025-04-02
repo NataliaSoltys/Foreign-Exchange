@@ -1,10 +1,10 @@
 package com.example.subscriptionservice.service;
 
 import com.example.subscriptionapi.dto.SubscriptionDto;
+import com.example.subscriptionapi.dto.enums.SubscriptionType;
 import com.example.subscriptionservice.model.SubscriptionMapper;
 import com.example.subscriptionservice.model.entities.Subscription;
 import com.example.subscriptionservice.model.entities.User;
-import com.example.subscriptionapi.dto.SubscriptionType;
 import com.example.subscriptionservice.repository.SubscriptionRepository;
 import com.example.subscriptionservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
