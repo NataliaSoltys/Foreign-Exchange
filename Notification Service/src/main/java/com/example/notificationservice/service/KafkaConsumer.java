@@ -49,7 +49,7 @@ public class KafkaConsumer {
                                 templateMap.get(notificationTypeClass).process(subscription, event);
                             }
                     );
-                    log.info("Finished processing notifications for type: {}", notificationTypeClass);
+                    log.info("Finished processing notifications for type: {}", notificationTypeClass); // todo: make 2 iteration only
                 }
         );
 
