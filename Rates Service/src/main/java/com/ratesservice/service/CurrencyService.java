@@ -26,7 +26,7 @@ public class CurrencyService {
     private final KafkaPublisher kafkaPublisher;
 
     //    @Scheduled(cron = "0 0 0 * * ?")  // everyday
-    @Scheduled(cron = "*/10 * * * * *") // for testing only
+    @Scheduled(cron = "0 */2 * * * *") // for testing only
     public void fetchCurrencyRates() {
         WebClient webClient = webClientBuilder.baseUrl(GET_ALL_EXCHANGE_RATES).build();
         CurrencyResponseDto responseDto = getCurrencyResponseDtoMono(webClient);

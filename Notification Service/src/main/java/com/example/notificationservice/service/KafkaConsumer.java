@@ -40,19 +40,15 @@ public class KafkaConsumer {
     }
 
     private void processSubscriptions(Map<String, List<SubscriptionDto>> subscriptionsByType, CurrencyEvent event) {
-        templateMap.keySet().forEach(
-                notificationTypeClass -> {
-                    log.info("Processing notifications for type: {}", notificationTypeClass);
-                    subscriptionsByType.get(notificationTypeClass).forEach(
-                            subscription -> {
-                                log.info("Starting sending notification process to userId{} for type {}", subscription.getUserId(), notificationTypeClass);
-                                templateMap.get(notificationTypeClass).process(subscription, event);
-                            }
-                    );
-                    log.info("Finished processing notifications for type: {}", notificationTypeClass); // todo: make 2 iteration only
-                }
-        );
-
-        log.info("Finished sending emails for event: {}", event);
+        subscriptionsByType.forEach((type, subscriptions) -> {
+            NotificationTemplate notification = templateMap.get(type);
+            log.info("Processing notifications for type: {}", type);
+            for (SubscriptionDto subscription : subscriptions) {
+                log.info("Sending notification for subscription: {}", subscription);
+                notification.process(subscription, event);
+            }
+        });
     }
+
+
 }
