@@ -12,6 +12,11 @@ public class NewCurrencyRateNotification extends NotificationTemplate {
     }
 
     @Override
+    protected void validateSubscriptionCase(SubscriptionDto subscription, CurrencyEvent event) {
+
+    }
+
+    @Override
     protected String prepareEmailBody(SubscriptionDto subscription, CurrencyEvent event) {
         return String.format("Cześć %s! Nowy kurs waluty %s: .2f",
                 subscription.getUserFirstName(),

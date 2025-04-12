@@ -11,10 +11,13 @@ public abstract class NotificationTemplate {
 
     public final void process(SubscriptionDto subscription, CurrencyEvent event) {
         if (!subscription.getIsActive()) return;
+        validateSubscriptionCase(subscription, event);
         String emailContent = prepareEmailBody(subscription, event);
         String subject = prepareEmailSubject(subscription, event);
         emailSenderService.sendEmail(subscription.getEmail(), subject, emailContent);
     }
+
+    protected abstract void validateSubscriptionCase(SubscriptionDto subscription, CurrencyEvent event);
 
     protected abstract String prepareEmailBody(SubscriptionDto subscription, CurrencyEvent event);
 

@@ -12,8 +12,13 @@ public class MinimumValueExceededNotification extends NotificationTemplate {
     }
 
     @Override
+    protected void validateSubscriptionCase(SubscriptionDto subscription, CurrencyEvent event) {
+
+    }
+
+    @Override
     protected String prepareEmailBody(SubscriptionDto subscription, CurrencyEvent event) {
-        return String.format("hI %s! The %s rate has exceeded your limit %.2f",
+        return String.format("hI %s! The %s rate has exceeded your minimum limit %.2f",
                 subscription.getUserFirstName(),
                 subscription.getCurrencyCode(),
                 subscription.getBuyPriceBoundaryValue());
@@ -21,6 +26,6 @@ public class MinimumValueExceededNotification extends NotificationTemplate {
 
     @Override
     protected String prepareEmailSubject(SubscriptionDto subscription, CurrencyEvent event) {
-        return "Maximum value exceeded!";
+        return "Minimum value exceeded!";
     }
 }

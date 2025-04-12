@@ -13,8 +13,13 @@ public class MaximumValueExceededNotification extends NotificationTemplate {
     }
 
     @Override
+    protected void validateSubscriptionCase(SubscriptionDto subscription, CurrencyEvent event) {
+
+    }
+
+    @Override
     protected String prepareEmailBody(SubscriptionDto subscription, CurrencyEvent event) {
-        return String.format("Hi %s! The %s rate has exceeded your limit %.2f",
+        return String.format("Hi %s! The %s rate has exceeded your maximum limit %.2f",
                 subscription.getUserFirstName(),
                 subscription.getCurrencyCode(),
                 subscription.getBuyPriceBoundaryValue());
