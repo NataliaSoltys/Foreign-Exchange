@@ -18,9 +18,8 @@ public class NewCurrencyRateNotification extends NotificationTemplate {
 
     @Override
     protected String prepareEmailBody(SubscriptionDto subscription, CurrencyEvent event) {
-        return String.format("Cześć %s! Nowy kurs waluty %s: .2f",
-                subscription.getUserFirstName(),
-                subscription.getCurrencyCode());
+        return String.format("Hi %s! The new rate is available.",
+                subscription.getUserFirstName());
     }
 
     @Override

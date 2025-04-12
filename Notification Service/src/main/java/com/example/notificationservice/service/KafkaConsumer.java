@@ -5,6 +5,7 @@ import com.example.subscriptionapi.dto.SubscriptionDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.security.oauthbearer.internals.secured.ValidateException;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -44,8 +45,12 @@ public class KafkaConsumer {
             NotificationTemplate notification = templateMap.get(type);
             log.info("Processing notifications for type: {}", type);
             for (SubscriptionDto subscription : subscriptions) {
-                log.info("Sending notification for subscription: {}", subscription);
-                notification.process(subscription, event);
+                try {
+                    log.info("Sending notification for subscription: {}", subscription);
+                    notification.process(subscription, event);
+                } catch (ValidateException e) {
+                    log.info("Skipping notification: {}", e.getMessage());
+                }
             }
         });
     }

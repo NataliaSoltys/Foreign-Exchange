@@ -37,10 +37,10 @@ public class CurrencyService {
         logger.info("Currency rates saved to db: {}", currencyRates);
     }
 
-    @PostConstruct
-    public void runOnStartup() {
-        fetchCurrencyRates();
-    }
+//    @PostConstruct
+//    public void runOnStartup() {
+//        fetchCurrencyRates();
+//    }
 
     private static CurrencyResponseDto getCurrencyResponseDtoMono(WebClient webClient) {
         return webClient.get()
