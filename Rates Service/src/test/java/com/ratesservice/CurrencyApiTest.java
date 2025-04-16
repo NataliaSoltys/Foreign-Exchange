@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class CurrencyApiIntegrationTest {
+class CurrencyApiIT {
 
     @Autowired
     private CurrencyApi currencyApi;
