@@ -3,7 +3,6 @@ package com.ratesservice.service;
 import com.ratesservice.model.dto.CurrencyResponseDto;
 import com.ratesservice.model.entites.CurrencyRate;
 import com.ratesservice.service.kafka.KafkaPublisher;
-import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,11 +35,6 @@ public class CurrencyService {
         List<CurrencyRate> currencyRates = currencyApi.addCurrencyRates(responseDto);
         logger.info("Currency rates saved to db: {}", currencyRates);
     }
-
-//    @PostConstruct
-//    public void runOnStartup() {
-//        fetchCurrencyRates();
-//    }
 
     private static CurrencyResponseDto getCurrencyResponseDtoMono(WebClient webClient) {
         return webClient.get()

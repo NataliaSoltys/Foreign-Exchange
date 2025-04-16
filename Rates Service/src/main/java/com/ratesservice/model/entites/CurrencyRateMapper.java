@@ -11,6 +11,4 @@ public interface CurrencyRateMapper {
     @Mapping(source = "buyPrice", target = "buyPrice")
     @Mapping(source = "sellPrice", target = "sellPrice")
     CurrencyRate toEntity(CurrencyRateDto dto);
-
-    //CurrencyRateDto toDto(CurrencyRate entity);
 }

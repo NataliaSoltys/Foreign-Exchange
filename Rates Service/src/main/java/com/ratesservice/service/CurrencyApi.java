@@ -25,7 +25,7 @@ public class CurrencyApi {
         List<CurrencyRate> currencyRates = responseDto.getRates().stream()
                 .map(dto -> {
                     CurrencyRate currencyRate = currencyRateMapper.toEntity(dto);
-                    currencyRate.setDate(date); //
+                    currencyRate.setDate(date);
                     return currencyRate;
                 })
                 .toList();
