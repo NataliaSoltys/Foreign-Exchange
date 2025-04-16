@@ -2,7 +2,7 @@ package com.example.subscriptionservice.model;
 
 
 import com.example.subscriptionapi.dto.UserDto;
-import com.example.subscriptionservice.model.entities.User;
+import com.example.subscriptionservice.model.entities.AppUser;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -15,6 +15,6 @@ public interface UserMapper {
     @Mapping(source = "phoneNumber", target = "phoneNumber")
     @Mapping(source = "country", target = "country")
     @Mapping(source = "address", target = "address")
-    User toEntity(UserDto dto);
+    AppUser toEntity(UserDto dto);
 
 }

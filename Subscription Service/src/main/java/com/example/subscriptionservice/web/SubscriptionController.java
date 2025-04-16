@@ -87,7 +87,7 @@ public class SubscriptionController {
     }
 
     @GetMapping("/by-type")
-    public ResponseEntity<List<SubscriptionDto>> getSubscriptionsByType(@RequestParam SubscriptionType subscriptionType) {
+    public ResponseEntity<List<SubscriptionDto>> getSubscriptionsByUserId(@RequestParam SubscriptionType subscriptionType) {
         try {
             List<SubscriptionDto> subscriptions = subscriptionApi.findBySubscriptionType(subscriptionType);
             logger.info("Fetched {} subscriptions of type {}", subscriptions.size(), subscriptionType);
@@ -99,10 +99,10 @@ public class SubscriptionController {
     }
 
     @GetMapping("/by-user")
-    public ResponseEntity<List<Subscription>> getSubscriptionsByType(@RequestBody String userId) {
+    public ResponseEntity<List<Subscription>> getSubscriptionsByUserId(@RequestParam String userId) {
         try {
             List<Subscription> subscriptions = subscriptionApi.findByUserId(userId);
-            logger.info("Fetched {} subscriptions with last name {}, id: {}", subscriptions.size(), subscriptions.get(0).getUser().getLastName(), userId);
+            logger.info("Fetched {} subscriptions with last name {}, id: {}", subscriptions.size(), subscriptions.get(0).getAppUser().getLastName(), userId);
             return ResponseEntity.ok(subscriptions);
         } catch (Exception e) {
             logger.error("Error fetching subscriptions: {}", e.getMessage());

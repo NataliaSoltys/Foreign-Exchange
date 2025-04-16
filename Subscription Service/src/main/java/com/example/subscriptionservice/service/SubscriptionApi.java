@@ -3,8 +3,8 @@ package com.example.subscriptionservice.service;
 import com.example.subscriptionapi.dto.SubscriptionDto;
 import com.example.subscriptionapi.dto.enums.SubscriptionType;
 import com.example.subscriptionservice.model.SubscriptionMapper;
+import com.example.subscriptionservice.model.entities.AppUser;
 import com.example.subscriptionservice.model.entities.Subscription;
-import com.example.subscriptionservice.model.entities.User;
 import com.example.subscriptionservice.repository.SubscriptionRepository;
 import com.example.subscriptionservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -23,8 +23,12 @@ public class SubscriptionApi {
     private final SubscriptionMapper subscriptionMapper;
 
     public void addSubscription(SubscriptionDto subscriptionDto) {
-        subscriptionRepository.save(subscriptionMapper.toEntity(subscriptionDto));
+        Subscription subscription = subscriptionMapper.toEntity(subscriptionDto);
+        AppUser savedUser = userRepository.save(subscription.getAppUser());
+        subscription.setAppUser(savedUser);
+        subscriptionRepository.save(subscription);
     }
+
 
     public Subscription updateSubscriptionStatus(String subscriptionId, Boolean isActive) {
         Optional<Subscription> foundSubscription = subscriptionRepository.findById(UUID.fromString(subscriptionId));
@@ -53,7 +57,7 @@ public class SubscriptionApi {
     }
 
     public List<Subscription> findByUserId(String userId) {
-        List<Subscription> foundSubscription = subscriptionRepository.findAllByUserId(UUID.fromString(userId));
+        List<Subscription> foundSubscription = subscriptionRepository.findAllByAppUserId(UUID.fromString(userId));
         if (foundSubscription.isEmpty()) {
             throw new RuntimeException("Subscription not found");
         }
@@ -61,12 +65,12 @@ public class SubscriptionApi {
     }
 
     public Subscription addSubscriptionWithExistingUser(SubscriptionDto subscriptionDto) {
-        Optional<User> foundUser = userRepository.findById(UUID.fromString(subscriptionDto.getUserId()));
+        Optional<AppUser> foundUser = userRepository.findById(UUID.fromString(subscriptionDto.getUserId()));
         if (foundUser.isEmpty()) {
             throw new RuntimeException("User not found, cannot save the subscription");
         }
         Subscription subscription = Subscription.builder()
-                .user(foundUser.get())
+                .appUser(foundUser.get())
                 .currencyCode(subscriptionDto.getCurrencyCode())
                 .subscriptionType(subscriptionDto.getSubscriptionType())
                 .sellPriceBoundaryValue(subscriptionDto.getSellPriceBoundaryValue())

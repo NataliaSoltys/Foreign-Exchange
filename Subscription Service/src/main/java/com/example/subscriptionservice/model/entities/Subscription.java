@@ -23,9 +23,9 @@ public class Subscription {
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private AppUser appUser;
 
     @Column(name = "currency_code", nullable = false)
     private String currencyCode;

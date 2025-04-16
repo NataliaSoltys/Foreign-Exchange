@@ -2,7 +2,7 @@ package com.example.subscriptionservice.service;
 
 import com.example.subscriptionapi.dto.UserDto;
 import com.example.subscriptionservice.model.UserMapper;
-import com.example.subscriptionservice.model.entities.User;
+import com.example.subscriptionservice.model.entities.AppUser;
 import com.example.subscriptionservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class UserApi {
         userRepository.save(userMapper.toEntity(userDto));
     }
 
-    public List<User> getAllSubscriptions() {
+    public List<AppUser> getAllSubscriptions() {
         return userRepository.findAll();
     }
 }

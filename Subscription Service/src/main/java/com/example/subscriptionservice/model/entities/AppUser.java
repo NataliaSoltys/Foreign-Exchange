@@ -1,15 +1,21 @@
 package com.example.subscriptionservice.model.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "user")
-public class User {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "app_user")
+public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")

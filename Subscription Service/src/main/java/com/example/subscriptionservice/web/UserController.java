@@ -1,7 +1,7 @@
 package com.example.subscriptionservice.web;
 
 import com.example.subscriptionapi.dto.UserDto;
-import com.example.subscriptionservice.model.entities.User;
+import com.example.subscriptionservice.model.entities.AppUser;
 import com.example.subscriptionservice.service.UserApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,14 +39,14 @@ public class UserController {
 
     @GetMapping
     @RequestMapping("/all")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userApi.getAllSubscriptions();
-        if (users.isEmpty()) {
+    public ResponseEntity<List<AppUser>> getAllUsers() {
+        List<AppUser> appUsers = userApi.getAllSubscriptions();
+        if (appUsers.isEmpty()) {
             logger.info("No users found");
             return ResponseEntity.noContent().build();
         }
-        logger.info("Fetched {} users", users.size());
-        return ResponseEntity.ok(users);
+        logger.info("Fetched {} users", appUsers.size());
+        return ResponseEntity.ok(appUsers);
     }
 
 }
