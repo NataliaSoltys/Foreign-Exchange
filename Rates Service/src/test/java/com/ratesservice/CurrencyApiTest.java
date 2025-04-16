@@ -49,6 +49,51 @@ class CurrencyApiIT {
         assertEquals(LocalDate.parse(date), saved.getDate());
     }
 
+    @Test
+    void shouldFindCurrencyRateByDate() {
+        // given: there are already data saved in DB
+        String date = "2025-04-15";
+        CurrencyResponseDto responseDto = CurrencyResponseDto.builder()
+                .effectiveDate(date)
+                .rates(List.of(createCurrencyRateDto("EUR", "euro", 4.20f, 4.30f)))
+                .build();
+
+        CurrencyResponseDto responseDto2 = CurrencyResponseDto.builder()
+                .effectiveDate("2025-04-16")
+                .rates(List.of(createCurrencyRateDto("EUR", "euro", 4.20f, 4.30f)))
+                .build();
+
+        currencyApi.addCurrencyRates(responseDto);
+        currencyApi.addCurrencyRates(responseDto2);
+
+        // when: user requests to get currencies by date
+        List<CurrencyRate> result = currencyApi.findByDate(LocalDate.parse(date));
+
+        // then: currencies by date are being fetched
+        assertEquals(1, result.size());
+        assertEquals("EUR", result.getFirst().getCode());
+    }
+
+    @Test
+    void shouldFindCurrencyRateByCode() {
+        // given: there are already data saved in DB
+        String date = "2025-04-18";
+        CurrencyResponseDto responseDto = CurrencyResponseDto.builder()
+                .effectiveDate(date)
+                .rates(List.of(createCurrencyRateDto("GBP", "funt szterling", 5.10f, 5.20f),
+                        createCurrencyRateDto("USD", "dolar amerykanski", 3.80f, 3.90f)))
+                .build();
+        currencyApi.addCurrencyRates(responseDto);
+
+        // when: user requests to get currencies by date
+        List<CurrencyRate> result = currencyApi.findByCode("GBP");
+
+        // then: currencies by code are being fetched
+        assertEquals(1, result.size());
+        assertEquals("GBP", result.getFirst().getCode());
+        assertEquals(LocalDate.parse(date), result.getFirst().getDate());
+    }
+
     private CurrencyRateDto createCurrencyRateDto(String code, String name, float bid, float ask) {
         CurrencyRateDto dto = new CurrencyRateDto();
         dto.setCode(code);
