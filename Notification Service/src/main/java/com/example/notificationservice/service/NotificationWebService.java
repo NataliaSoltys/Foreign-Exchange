@@ -13,7 +13,6 @@ import java.util.Map;
 
 import static com.example.notificationservice.web.url.HttpUrls.GET_ALL_SUBSCRIPTIONS_GROUPED_BY_TYPE;
 
-
 @Service
 @AllArgsConstructor
 public class NotificationWebService {
